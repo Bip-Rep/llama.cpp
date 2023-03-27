@@ -1,9 +1,14 @@
-# llama.cpp
-
 ![llama](https://user-images.githubusercontent.com/1991296/227761327-6d83e30e-2200-41a6-bfbb-f575231c54f4.png)
 
 [![Actions Status](https://github.com/ggerganov/llama.cpp/workflows/CI/badge.svg)](https://github.com/ggerganov/llama.cpp/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+# To Build for android and IOS
+
+To build for android and ios use the branch for_mobile
+
+# llama.cpp
+
 
 Inference of [LLaMA](https://arxiv.org/abs/2302.13971) model in pure C/C++
 
