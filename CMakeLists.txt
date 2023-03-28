@@ -60,8 +60,8 @@ option(LLAMA_FMA                    "llama: enable FMA"                         
 option(LLAMA_ACCELERATE             "llama: enable Accelerate framework"                    ON)
 option(LLAMA_OPENBLAS               "llama: use OpenBLAS"                                   OFF)
 
-option(LLAMA_BUILD_TESTS            "llama: build tests"    ${LLAMA_STANDALONE})
-option(LLAMA_BUILD_EXAMPLES         "llama: build examples" ${LLAMA_STANDALONE})
+# option(LLAMA_BUILD_TESTS            "llama: build tests"    ${LLAMA_STANDALONE})
+# option(LLAMA_BUILD_EXAMPLES         "llama: build examples" ${LLAMA_STANDALONE})
 
 #
 # Compile flags
@@ -239,11 +239,11 @@ endif()
 # Executables
 #
 
-add_executable(main main.cpp)
-target_link_libraries(main PRIVATE llama ggml utils)
+# add_executable(main main.cpp)
+# target_link_libraries(main PRIVATE llama ggml utils)
 
-add_executable(quantize quantize.cpp)
-target_link_libraries(quantize PRIVATE llama ggml utils)
+# add_executable(quantize quantize.cpp)
+# target_link_libraries(quantize PRIVATE llama ggml utils)
 
 #
 # programs, examples and tests
