@@ -15,9 +15,7 @@ Inference of [LLaMA](https://arxiv.org/abs/2302.13971) model in pure C/C++
 **Hot topics:**
 
 - [Roadmap (short-term)](https://github.com/ggerganov/llama.cpp/discussions/457)
-- New C-style API is now available: https://github.com/ggerganov/llama.cpp/pull/370
-- Cache input prompts for faster initialization: https://github.com/ggerganov/llama.cpp/issues/64
-- Create a `llama.cpp` logo: https://github.com/ggerganov/llama.cpp/issues/105
+- Support for [GPT4All](https://github.com/ggerganov/llama.cpp#using-gpt4all)
 
 ## Description
 
@@ -41,6 +39,12 @@ Supported platforms:
 - [X] Linux
 - [X] Windows (via CMake)
 - [X] Docker
+
+Supported models:
+
+- [X] LLaMA
+- [X] [Alpaca](https://github.com/ggerganov/llama.cpp#instruction-mode-with-alpaca)
+- [X] [GPT4All](https://github.com/ggerganov/llama.cpp#using-gpt4all)
 
 ---
 
@@ -226,6 +230,19 @@ The majority (54%) are using public transit. This includes buses, trams and metr
 cadaver, cauliflower, cabbage (vegetable), catalpa (tree) and Cailleach.
 > 
 ```
+
+### Using [GPT4All](https://github.com/nomic-ai/gpt4all)
+
+- Obtain the `gpt4all-lora-quantized.bin` model
+- It is distributed in the old `ggml` format which is now obsoleted
+- You have to convert it to the new format using [./convert-gpt4all-to-ggml.py](./convert-gpt4all-to-ggml.py):
+
+  ```bash
+  python3 convert-gpt4all-to-ggml.py models/gpt4all-7B/gpt4all-lora-quantized.bin ./models/tokenizer.model 
+  ```
+  
+- You can now use the newly generated `gpt4all-lora-quantized.bin` model in exactly the same way as all other models
+- The original model is saved in the same folder with a suffix `.orig`
 
 ### Obtaining and verifying the Facebook LLaMA original model and Stanford Alpaca model data
 
