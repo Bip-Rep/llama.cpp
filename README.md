@@ -42,9 +42,11 @@ Supported platforms:
 
 Supported models:
 
-- [X] LLaMA
+- [X] LLaMA 🦙
 - [X] [Alpaca](https://github.com/ggerganov/llama.cpp#instruction-mode-with-alpaca)
 - [X] [GPT4All](https://github.com/ggerganov/llama.cpp#using-gpt4all)
+- [X] [Chinese LLaMA / Alpaca](https://github.com/ymcui/Chinese-LLaMA-Alpaca)
+- [X] [Vigogne (French)](https://github.com/bofenghuang/vigogne)
 
 ---
 
@@ -158,8 +160,8 @@ python3 -m pip install torch numpy sentencepiece
 # convert the 7B model to ggml FP16 format
 python3 convert-pth-to-ggml.py models/7B/ 1
 
-# quantize the model to 4-bits
-python3 quantize.py 7B
+# quantize the model to 4-bits (using method 2 = q4_0)
+./quantize ./models/7B/ggml-model-f16.bin ./models/7B/ggml-model-q4_0.bin 2
 
 # run the inference
 ./main -m ./models/7B/ggml-model-q4_0.bin -n 128
@@ -304,7 +306,7 @@ And after 4.45 hours, you will have the final perplexity.
 
 ### Android
 
-You can easily run `llama.cpp` on Android device with [termux](https://play.google.com/store/apps/details?id=com.termux).
+You can easily run `llama.cpp` on Android device with [termux](https://termux.dev/).
 First, obtain the [Android NDK](https://developer.android.com/ndk) and then build with CMake:
 ```
 $ mkdir build-android
@@ -313,7 +315,7 @@ $ export NDK=<your_ndk_directory>
 $ cmake -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-23 -DCMAKE_C_FLAGS=-march=armv8.4a+dotprod ..
 $ make
 ```
-Install [termux](https://play.google.com/store/apps/details?id=com.termux) on your device and run `termux-setup-storage` to get access to your SD card.
+Install [termux](https://termux.dev/) on your device and run `termux-setup-storage` to get access to your SD card.
 Finally, copy the `llama` binary and the model files to your device storage. Here is a demo of an interactive session running on Pixel 5 phone:
 
 https://user-images.githubusercontent.com/271616/225014776-1d567049-ad71-4ef2-b050-55b0b3b9274c.mp4

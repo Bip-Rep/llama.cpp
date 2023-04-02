@@ -68,7 +68,9 @@ option(LLAMA_BUILD_EXAMPLES         "llama: build examples" ${LLAMA_STANDALONE})
 # Compile flags
 #
 
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED true)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -253,7 +255,7 @@ endif()
 #
 
 if (LLAMA_BUILD_TESTS AND NOT CMAKE_JS_VERSION)
-    enable_testing()
+    include(CTest)
     add_subdirectory(tests)
 endif ()
 

@@ -27,9 +27,9 @@ def read_tokens(fin, vocab_size):
         text_len = struct.unpack("i", fin.read(4))[0]
         text_bytes = fin.read(text_len)
         try:
-            text = text_bytes.decode("utf-8")
+            text = text_bytes.decode()
         except UnicodeDecodeError:
-            text = text_bytes.decode("utf-8", "replace")
+            text = text_bytes.decode(errors="replace")
         score = struct.unpack("f", fin.read(4))[0]
         tokens.append((text, score))
     return tokens
@@ -82,7 +82,12 @@ def read_variables(fin):
 
         shape = tuple(struct.unpack("i" * n_dims, fin.read(4 * n_dims)))
         shape = shape[::-1]
-        name = fin.read(name_length).decode("utf-8")
+        name = fin.read(name_length).decode()
+
+        # ensure tensor data is aligned
+        tensor_data_offset = fin.tell()
+        tensor_data_offset = (tensor_data_offset + 31) & -32
+        fin.seek(tensor_data_offset)
 
         if ftype_cur == 2:
             # 4-bit quantized weights
@@ -194,7 +199,7 @@ def chat(model, hparams, llama_dir):
     device = torch.device("cpu")
     llama = llama.to(device)
 
-    ctx = """You are AI. 
+    ctx = """You are AI.
 This is a dialog, where User interacts with AI. AI is helpful, kind, obedient, honest, respectful, direct, concise, should try to protect User's privacy, and knows its own limits. Also, AI must answer User and AI cannot stop the conversation by itself.
 User: Hello, AI.
 AI: Hello! How can I assist you today?
@@ -202,11 +207,11 @@ AI: Hello! How can I assist you today?
     print(ctx.rstrip("\n"))
     while True:
         print("-" * 60)
-        prompt = input(f"User: ")
+        prompt = input("User: ")
         if ctx != "":
-            ctx = ctx + "User: " + prompt + "\n"
+            ctx = f"{ctx}User: {prompt}\n"
         else:
-            ctx = prompt + "\nAI:"
+            ctx = f"{prompt}\nAI:"
 
         ctx = (ctx[-1920:]) if len(ctx) >= 2048 else ctx
 
@@ -231,7 +236,7 @@ AI: Hello! How can I assist you today?
                 )
             s = generation_output.sequences[0]
             decoded = tokenizer.decode(s)
-            ctx = decoded + "\n"
+            ctx = f"{decoded}\n"
 
 
 def main():
@@ -249,7 +254,7 @@ def main():
     parser.add_argument(
         "--hf",
         action="store_true",
-        help="Whether to save the model in the huggingface format. (default: False)",
+        help="Whether to save the model in the Hugging Face format. (default: False)",
     )
     parser.add_argument(
         "--chat", "-c", action="store_true", help="Whether to open a chat with the model. (default: False)"
