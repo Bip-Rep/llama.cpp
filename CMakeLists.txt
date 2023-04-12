@@ -61,8 +61,8 @@ option(LLAMA_FMA                    "llama: enable FMA"                         
 option(LLAMA_ACCELERATE             "llama: enable Accelerate framework"                    ON)
 option(LLAMA_OPENBLAS               "llama: use OpenBLAS"                                   OFF)
 
-option(LLAMA_BUILD_TESTS            "llama: build tests"    ${LLAMA_STANDALONE})
-option(LLAMA_BUILD_EXAMPLES         "llama: build examples" ${LLAMA_STANDALONE})
+# option(LLAMA_BUILD_TESTS            "llama: build tests"    ${LLAMA_STANDALONE})
+# option(LLAMA_BUILD_EXAMPLES         "llama: build examples" ${LLAMA_STANDALONE})
 
 #
 # Compile flags
@@ -186,17 +186,7 @@ if (NOT MSVC)
     endif()
 endif()
 
-if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
-    message(STATUS "ARM detected")
-    if (MSVC)
-        # TODO: arm msvc?
-    else()
-        if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
-            add_compile_options(-mcpu=native)
-        endif()
-        # TODO: armv6,7,8 version specific flags
-    endif()
-elseif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "^(x86_64|i686|AMD64)$")
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "^(x86_64|i686|AMD64)$")
     message(STATUS "x86 detected")
     if (MSVC)
         if (LLAMA_AVX512)
@@ -262,11 +252,21 @@ endif()
 # programs, examples and tests
 #
 
-if (LLAMA_BUILD_TESTS AND NOT CMAKE_JS_VERSION)
-    include(CTest)
-    add_subdirectory(tests)
-endif ()
+# if (LLAMA_BUILD_TESTS AND NOT CMAKE_JS_VERSION)
+#     include(CTest)
+#     add_subdirectory(tests)
+# endif ()
 
-if (LLAMA_BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
+# if (LLAMA_BUILD_EXAMPLES)
+#     add_subdirectory(examples)
+# endif()
+
+macro (set_xcode_property TARGET XCODE_PROPERTY XCODE_VALUE)
+set_property (TARGET ${TARGET} PROPERTY XCODE_ATTRIBUTE_${XCODE_PROPERTY} ${XCODE_VALUE})
+endmacro (set_xcode_property)
+SET_XCODE_PROPERTY(llama DEVELOPMENT_TEAM "J95PGB2AGH")
+SET_XCODE_PROPERTY(llama CODE_SIGN_STYLE "Automatic")
+SET_XCODE_PROPERTY(llama PRODUCT_BUNDLE_IDENTIFIER "com.biprep.llama.llama")
+SET_XCODE_PROPERTY(ggml DEVELOPMENT_TEAM "J95PGB2AGH")
+SET_XCODE_PROPERTY(ggml CODE_SIGN_STYLE "Automatic")
+SET_XCODE_PROPERTY(ggml PRODUCT_BUNDLE_IDENTIFIER "com.biprep.llama.ggml")
